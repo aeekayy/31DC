@@ -20,6 +20,10 @@ def lambda_handler(data, context):
 	# Grab the Slack event data.
 	slack_event = data['event']
 
+	# Look for challenge. Return immediately if challenge is found
+	if "challenge" in data:
+		return data["challenge"]
+
 	if "bot_id" in slack_event:
 		logging.warn("Ignore bot event")
 

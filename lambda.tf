@@ -46,7 +46,7 @@ data "aws_iam_policy_document" "slack-lambda-assume-role-policy" {
 }
 
 resource "aws_iam_role" "iam_for_slack_lambda" {
-	name = "iam_for_slack_lambda"
+	name = "aeekay-prod-iam-31dc-lambda"
 	assume_role_policy = "${data.aws_iam_policy_document.slack-lambda-assume-role-policy.json}"
 	path = "/service-role/"
 }
@@ -56,8 +56,8 @@ resource "aws_iam_role_policy_attachment" "iam-slack-lambda-attach" {
 	policy_arn	= "${aws_iam_policy.iam_for_slack_policy.arn}"
 }
 
-resource "archive_file" "slack_lambda_archive" {
-	source-dir	= "31dc-python"
+data "archive_file" "slack_lambda_archive" {
+	source_dir	= "31dc-python"
 	output_path	= "31dc-python.zip"
 	type		= "zip"
 }
@@ -70,7 +70,7 @@ resource "aws_lambda_function" "dc_slack_api" {
         description     = "Receive a Slack message and do something with it."
         timeout         = "90"
 	filename	= "31dc-python.zip"
-	source_code_hash = "${archive_file.slack_lambda_archive.output_base64sha256}"
+	source_code_hash = "${data.archive_file.slack_lambda_archive.output_base64sha256}"
         environment {
                 variables = {
                         SnsArn 		= "${var.snsName}"
