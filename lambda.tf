@@ -66,7 +66,7 @@ resource "aws_lambda_function" "dc_slack_api" {
         function_name   = "dc_slack_api"
         role            = "${aws_iam_role.iam_for_slack_lambda.arn}"
         handler         = "slack.lambda_handler"
-        runtime         = "python2.7"
+        runtime         = "python3.6"
         description     = "Receive a Slack message and do something with it."
         timeout         = "90"
 	filename	= "31dc-python.zip"
